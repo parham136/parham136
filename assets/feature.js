@@ -44,12 +44,48 @@ var $ = jQuery.noConflict();
         }
     };
 
+    // Get the checked items key
+    const getCheckItemsKey = (target) => {
+        const checkBoxes = target.parents('.dt_modal_container').find('.service_checkbox');
+
+        if (!checkBoxes.length) return;
+
+        const serviceKeys = [];
+
+        $.each(checkBoxes, (index, element) => {
+            if ($(element).prop('checked')) {
+                serviceKeys.push($(element).attr('data-key'));
+            }
+        });
+
+        return serviceKeys;
+    };
+
+    // Reset the pop fields
+    const resetPopupFields = (target) => {
+        const checkBoxes = target.parents('.dt_modal_container').find('.service_checkbox');
+
+        if (!checkBoxes.length) return;
+
+        $.each(checkBoxes, (index, element) => {
+            $(element).prop('checked', false);
+        });
+
+        const termsCheckbox = target.parents('.modal_body').find('.contract_terms input');
+
+        termsCheckbox.prop('checked', false);
+
+        const cartTotal = target.parents('.dt_modal_container').find('.total .cart_total');
+
+        cartTotal.text(cartTotal.attr('data-price'));
+    };
+
     const addToCart = (e) => {
         e.preventDefault();
 
         const target = $(e.currentTarget);
 
-        let termsCheckbox = target.parents('.modal_body').find('.contract_terms input');
+        const termsCheckbox = target.parents('.modal_body').find('.contract_terms input');
 
         if (!termsCheckbox.prop('checked')) {
             target.parents('.modal_body').find('.notice_message').addClass('active');
@@ -58,12 +94,15 @@ var $ = jQuery.noConflict();
 
         let productID = target.attr('data-id');
 
+        const itemKeys = getCheckItemsKey(target);
+
         if (!productID) return;
 
         $.ajax({
             url: dtLocal.ajaxUrl,
             data: {
                 productID,
+                itemKeys,
                 action: 'dt_add_to_cart'
             },
             method: 'post',
@@ -75,13 +114,13 @@ var $ = jQuery.noConflict();
             success: (response) => {
                 if (!response) return;
 
-                if (response.data.response == 'invalid') {
-                    alert(response.data.message);
-                }
-
                 if (response.data.response == 'success') {
                     target.attr('disabled', false);
+
                     $(document.body).trigger('wc_fragment_refresh');
+
+                    resetPopupFields(target);
+
                     closeModal(e);
                 }
             },
@@ -91,6 +130,11 @@ var $ = jQuery.noConflict();
 
             error: (err) => {
                 target.html('Add to cart');
+
+                if (err.responseJSON.data.response == 'invalid') {
+                    alert(err.responseJSON.data.message);
+                }
+
                 alert('Something went wrong try again');
             }
         });

@@ -95,7 +95,7 @@ function customCartButton($atts) {
                             <h3>Total:</h3>
                             <div class="input_box">
                                 <span class="currency_symbol">'.get_woocommerce_currency_symbol().'</span>
-                                <strong class="cart_total">'.$productPrice.'</strong>
+                                <strong class="cart_total" data-price="'.$productPrice.'">'.$productPrice.'</strong>
                             </div>
                         </label>
                     </div>
@@ -130,7 +130,7 @@ function listServices($productID) {
         foreach ($metaValue as $key => $services) {
             $servicesHtml .= '
                 <label class="service" for="checkbox_'.$key.'">
-                    <input type="checkbox" name="checkbox_'.$key.'" class="service_checkbox" id="checkbox_'.$key.'" value="'.esc_html($services['servicePrice']).'" />
+                    <input type="checkbox" data-key="'.$key.'"name="checkbox_'.$key.'" class="service_checkbox" id="checkbox_'.$key.'" value="'.esc_html($services['servicePrice']).'" />
                     <strong>'.esc_html($services['serviceName']).' (£'.esc_html($services['servicePrice']).')</strong>
                 </label>
             ';
@@ -156,8 +156,17 @@ function addProductToCart() {
     }
 
     $productID = sanitize_text_field($_POST['productID']);
+    $itemKeys = $_POST['itemKeys'] ? sanitizeData($_POST['itemKeys']) : [];
 
-    global $woocommerce;
+    $dtServices = get_post_meta($productID, 'dt_services', true);
+
+    $selectedServices = [];
+
+    if ($itemKeys) {
+        foreach ($itemKeys as $itemKey) {
+            $selectedServices[] = $dtServices[$itemKey];
+        }
+    }
 
     if (get_post_meta($productID, "_stock_status", true) !== 'instock') {
         $output['response'] = 'invalid';
@@ -166,10 +175,13 @@ function addProductToCart() {
         wp_die();
     }
 
-    if ($woocommerce->cart->add_to_cart($productID)) {
+    session_start();
+    $_SESSION['selectedServices'] = $selectedServices;
+
+    if (WC()->cart->add_to_cart($productID)) {
+
         $output['response'] = 'success';
         $output['message'] = 'Your product is added to your cart';
-        $output['productPrice'] = wc_get_product($productID)->get_price();
         wp_send_json_success($output, 200);
         wp_die();
     }
@@ -178,15 +190,6 @@ function addProductToCart() {
     $output['message'] = 'Product couldn\'t be added. Please try again';
     wp_send_json_error($output, 400);
     wp_die();
-}
-
-// Add custom data to product cart
-/**
- * @param $productID
- */
-function addCustomDataToProductCart($productID) {
-    $metaValue = get_post_meta($productID, 'dt_services', true);
-
 }
 
 // Add meta box to control the map zoom option
@@ -355,4 +358,155 @@ function saveServices() {
     $output['message'] = 'Product couldn\'t be added. Please try again';
     wp_send_json_error($output, 400);
     wp_die();
+}
+
+add_filter('woocommerce_add_cart_item_data', 'addServicesDataToCartItem', 1, 1);
+
+/**
+ * @param  $cart_item_data
+ * @return mixed
+ */
+function addServicesDataToCartItem($cartItemData) {
+
+    session_start();
+
+    if (isset($_SESSION['selectedServices'])) {
+        $selectedServices = $_SESSION['selectedServices'];
+    }
+
+    if (empty($selectedServices)) {
+        return $cartItemData;
+    } else {
+        return array_merge($cartItemData, [
+            'selectedServices' => $selectedServices
+        ]);
+    }
+
+    unset($_SESSION['selectedServices']);
+}
+
+add_action('woocommerce_before_calculate_totals', 'addServicesPrice', 1, 999);
+
+/**
+ * @param  $cartObject
+ * @return null
+ */
+function addServicesPrice($cartObject) {
+    // Avoiding hook repetition (when using price calculations for example | optional)
+    if (did_action('woocommerce_before_calculate_totals') >= 2) {
+        return;
+    }
+
+    $cartContents = $cartObject->cart_contents;
+
+    foreach ($cartContents as $cartItemKey => $item) {
+
+        if (isset($item['selectedServices'])) {
+
+            $newItemPrice = 0;
+
+            foreach ($item['selectedServices'] as $key => $service) {
+                $newItemPrice = $newItemPrice + $service['servicePrice'];
+            }
+
+            $newItemPrice = $item['data']->get_price() + $newItemPrice;
+
+            $item['data']->set_price($newItemPrice);
+        }
+    }
+}
+
+add_filter('woocommerce_cart_item_price', 'addServicesItemPrice', 1, 3);
+
+add_filter('woocommerce_cart_item_name', 'addServiceAfterProductName', 1, 2);
+
+/**
+ * @param  $product_name
+ * @param  $values
+ * @return mixed
+ */
+function addServiceAfterProductName($productName, $values) {
+
+    $returnString = $productName;
+
+    if (isset($values["selectedServices"])) {
+        foreach ($values["selectedServices"] as $key => $service) {
+            $returnString .= "<br/>";
+            $returnString .= '<span class="subitem_name" style="font-weight: bold;">'.$service['serviceName'].'</span>';
+            if (count($values["selectedServices"]) == ($key + 1)) {
+                $returnString .= "<br/>";
+            }
+        }
+    }
+
+    return $returnString;
+}
+
+/**
+ * @param  $product_name
+ * @param  $values
+ * @param  $cart_item_key
+ * @return mixed
+ */
+function addServicesItemPrice($productPriceText, $values) {
+
+    $productID = $values["product_id"];
+
+    $product = wc_get_product($productID);
+
+    $productOriginalPrice = $product->get_regular_price();
+
+    $returnString = $productPriceText;
+
+    if (isset($values["selectedServices"])) {
+        $returnString = '<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">'.get_woocommerce_currency_symbol().'</span>'.$productOriginalPrice.'</bdi></span>';
+
+        foreach ($values["selectedServices"] as $key => $service) {
+            $returnString .= "<br/>";
+            $returnString .= '<span class="subitem_price" style="font-weight: bold;">+ '.get_woocommerce_currency_symbol().$service["servicePrice"].'</span>';
+        }
+    }
+
+    return $returnString;
+}
+
+/**
+ * Display the price in order review page section
+ * @param  $product
+ * @param  $values
+ * @return mixed
+ */
+function addServicesPriceInOrderReview($product, $item) {
+
+    $productOriginalPrice = $product->get_regular_price();
+
+    $returnString = '';
+
+    $returnString = '<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">'.get_woocommerce_currency_symbol().'</span>'.$productOriginalPrice.'</bdi></span>';
+
+    if (isset($item["selectedServices"])) {
+
+        foreach ($item["selectedServices"] as $key => $service) {
+            $returnString .= "<br/>";
+            $returnString .= '<span class="subitem_price" style="font-weight: bold;">+ '.get_woocommerce_currency_symbol().$service["servicePrice"].'</span>';
+        }
+    }
+
+    return $returnString;
+}
+
+add_action('woocommerce_add_order_item_meta', 'displayServicePriceInOrder', 1, 2);
+
+/**
+ * This adds the information as meta data so that it can be seen as part of the order (to hide any meta data from the customer
+ * just start it with an underscore)
+ * @param $item_id
+ * @param $values
+ */
+function displayServicePriceInOrder($item_id, $values) {
+    global $woocommerce, $wpdb;
+
+    wc_add_order_item_meta($item_id, 'item_details', $values['_custom_options']['description']);
+    wc_add_order_item_meta($item_id, 'customer_image', $values['_custom_options']['another_example_field']);
+    wc_add_order_item_meta($item_id, '_hidden_field', $values['_custom_options']['hidden_info']);
 }

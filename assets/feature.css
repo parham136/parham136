@@ -1,0 +1,214 @@
+* {
+    box-sizing: border-box !important;
+    padding: 0;
+    margin: 0;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.dt_buy_now_button,
+.dt_add_to_cart_button {
+    font-size: 13px;
+    font-weight: 400;
+    text-transform: capitalize;
+    fill: #ffffff;
+    color: #ffffff;
+    background-color: #2d7cff;
+    border-radius: 10px;
+    padding: 10px 17px 10px 17px;
+    border: 1px solid #2d7cff;
+    cursor: pointer;
+    transition: all ease-in-out 200ms;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.dt_buy_now_button:hover,
+.dt_add_to_cart_button:hover,
+.dt_buy_now_button:focus,
+.dt_add_to_cart_button:focus {
+    color: #2d7cff;
+    background-color: #02010100;
+    border-color: #2d7cff;
+}
+
+.dt_modal_container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: none;
+}
+
+.dt_modal_container.active {
+    display: block;
+}
+
+.dt_modal_container .modal_overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.dt_modal_container .modal_wrapper {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    max-width: 490px;
+    width: 95%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: left;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    transition: all ease-in-out 200ms;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.dt_modal_container .modal_wrapper.active {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.dt_modal_container .modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding: 0 1.7rem;
+    border-bottom: 1px solid #06060642;
+    padding-bottom: 1rem;
+}
+
+.dt_modal_container .modal_header h2 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #0000007a;
+}
+.dt_modal_container .modal_header p {
+    margin: 0;
+}
+.dt_modal_container .modal_close {
+    cursor: pointer;
+}
+
+.dt_modal_container .modal_body {
+    padding: 0 1.7rem;
+    overflow-y: auto;
+}
+
+.dt_modal_container .servcies {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.dt_modal_container .service {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    cursor: pointer;
+}
+
+.dt_modal_container .contract_terms {
+    margin-top: 2rem;
+}
+.dt_modal_container .contract_text {
+    color: #2d7cff;
+}
+
+.dt_modal_container .service input[type='checkbox'] {
+    all: unset;
+    position: relative;
+    width: 1.3rem;
+    height: 1.3rem;
+    color: #363839;
+    border: 1px solid #bdc1c6;
+    border-radius: 4px;
+    appearance: none;
+    outline: 0;
+    cursor: pointer;
+    transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
+}
+
+.dt_modal_container .service input[type='checkbox']::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: 40%;
+    left: 55%;
+    width: 7px;
+    height: 14px;
+    border-style: solid;
+    border-color: #fff;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    opacity: 0;
+}
+
+.dt_modal_container .service input[type='checkbox']:checked {
+    color: #fff;
+    border-color: #2d7cff;
+    background: #2d7cff;
+}
+
+.dt_modal_container .service input[type='checkbox']:checked::before {
+    opacity: 1;
+}
+
+.dt_modal_container .total {
+    margin-top: 2rem;
+}
+
+.dt_modal_container .total h3 {
+    font-weight: bold;
+    color: #0000007a;
+    margin: 0;
+}
+
+.dt_modal_container .input_box {
+    background: rgba(45, 124, 255, 0.13);
+    display: flex;
+    width: 100%;
+    height: 45px;
+    border-radius: 10px;
+    padding: 0.5rem 0.8rem;
+    margin-top: 0.5rem;
+    align-items: center;
+}
+
+.dt_modal_container .input_box .currency_symbol,
+.dt_modal_container .input_box strong {
+    font-weight: bolder;
+    font-size: 1.2rem;
+}
+
+.dt_add_to_cart_button {
+    margin: 0.6rem 0 0.5rem 0;
+}
+
+.dt_modal_container .notice_message {
+    color: red;
+    display: none;
+}
+
+.dt_modal_container .notice_message.active {
+    display: block;
+}

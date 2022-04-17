@@ -29,9 +29,7 @@ var $ = jQuery.noConflict();
 
         target.parents('.dt_common_container').find('.modal_wrapper').removeClass('active');
 
-        setTimeout(() => {
-            target.parents('.dt_common_container').removeClass('active');
-        }, 200);
+        target.parents('.dt_common_container').removeClass('active');
     };
 
     const updatePlaceholderPrice = (e) => {

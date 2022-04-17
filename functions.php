@@ -62,14 +62,22 @@ add_shortcode('dt_add_to_cart_button', 'customCartButton');
  */
 function customCartButton($atts) {
 
-    $productID = 657;
+    if (!isset($atts['product_id']) || !$atts) {
+        return;
+    }
+
+    $productID = $atts['product_id'];
 
     $productPrice = wc_get_product($productID)->get_price();
+
+    if (!$productPrice) {
+        return;
+    }
 
     $cartButton = '<button class="dt_buy_now_button">Buy now</button>';
 
     $cartButton .= '
-    <div class="dt_modal_container">
+    <div class="dt_modal_container dt_common_container">
         <div class="modal_overlay"></div>
 
         <div class="modal_wrapper">
@@ -86,7 +94,7 @@ function customCartButton($atts) {
 
             <div class="modal_body">
                 <div class="modal_content">
-                    <div class="servcies">
+                    <div class="services">
                         '.listServices($productID).'
                     </div>
 
@@ -105,8 +113,43 @@ function customCartButton($atts) {
                         <strong class="contract_text">Contract terms & conditions</strong>
                     </label>
 
-                    <button class="dt_add_to_cart_button" data-id="657">Add to cart</button>
+                    <button class="dt_add_to_cart_button" data-id="'.esc_attr($productID).'">Add to cart</button>
                     <div class="notice_message">Please agree to our terms & conditions</div>
+                </div>
+            </div>
+
+        </div>
+    </div>';
+
+    $cartButton .= '
+    <div class="dt_modal_container2 dt_common_container">
+        <div class="modal_overlay"></div>
+
+        <div class="modal_wrapper">
+
+            <div class="modal_header">
+                <div>
+                    <h2>Terms & Conditions</h2>
+                    <p>Please go through our terms & conditions carefully</p>
+                </div>
+                <div class="modal_close">
+                    <img src="'.get_stylesheet_directory_uri().'/assets/close.svg'.'" alt="close" width="22" height="22" />
+                </div>
+            </div>
+
+            <div class="modal_body">
+                <div class="modal_content">
+
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias minus,
+                        officia animi ipsam accusamus consectetur sed voluptatum provident nemo labore
+                        dicta excepturi placeat atque veniam. Earum eaque incidunt obcaecati?
+                    </p>
+
+                    <div class="agreements_btn">
+                        <button class="i_disgree" data-action="disagree">disagree</button>
+                        <button class="i_aggree" data-action="agree">I agree</button>
+                    </div>
                 </div>
             </div>
 
@@ -503,10 +546,11 @@ add_action('woocommerce_add_order_item_meta', 'displayServicePriceInOrder', 1, 2
  * @param $item_id
  * @param $values
  */
-function displayServicePriceInOrder($item_id, $values) {
-    global $woocommerce, $wpdb;
-
-    wc_add_order_item_meta($item_id, 'item_details', $values['_custom_options']['description']);
-    wc_add_order_item_meta($item_id, 'customer_image', $values['_custom_options']['another_example_field']);
-    wc_add_order_item_meta($item_id, '_hidden_field', $values['_custom_options']['hidden_info']);
+function displayServicePriceInOrder($itemID, $values) {
+    if (isset($values["selectedServices"])) {
+        foreach ($values["selectedServices"] as $key => $service) {
+            wc_add_order_item_meta($itemID, 'Service name', $service["serviceName"]);
+            wc_add_order_item_meta($itemID, 'Service price', ''.get_woocommerce_currency_symbol().$service["servicePrice"].'');
+        }
+    }
 }

@@ -2,11 +2,12 @@ var $ = jQuery.noConflict();
 
 (async () => {
     const buyNowButton = $('.dt_buy_now_button');
-    const closeModalBtn = $('.dt_modal_container .modal_close');
+    const closeModalBtn = $('.dt_common_container .modal_close');
     const modalOverlay = $('.modal_overlay');
     const addToCartBtn = $('.dt_add_to_cart_button');
-    const serviceCheckbox = $('.service_checkbox');
+    const serviceCheckbox = $('.dt_modal_container .service_checkbox');
     const contractCheckbox = $('.dt_modal_container .contract_terms input');
+    const agreementsBtn = $('.dt_modal_container2, .agreements_btn button');
 
     const showModal = (e) => {
         e.stopPropagation();
@@ -17,12 +18,26 @@ var $ = jQuery.noConflict();
         }, 50);
     };
 
+    // Show the contract modal on top of buy now feature modal
+    const showContractModal = (e) => {
+        e.stopPropagation();
+
+        $('.dt_modal_container2').addClass('active');
+
+        setTimeout(() => {
+            $('.dt_modal_container2 .modal_wrapper').addClass('active');
+        }, 50);
+    };
+
     const closeModal = (e) => {
         e.stopPropagation();
 
-        $('.dt_modal_container .modal_wrapper').removeClass('active');
+        const target = $(e.currentTarget);
+
+        target.parents('.dt_common_container').find('.modal_wrapper').removeClass('active');
+
         setTimeout(() => {
-            $('.dt_modal_container').removeClass('active');
+            target.parents('.dt_common_container').removeClass('active');
         }, 200);
     };
 
@@ -143,11 +158,23 @@ var $ = jQuery.noConflict();
     const toggleContractCondition = (e) => {
         const target = $(e.currentTarget);
 
-        if (target.prop('checked')) {
-            target.parents('.modal_body').find('.notice_message').removeClass('active');
+        target.prop('checked', false);
+
+        showContractModal(e);
+    };
+
+    // Toggle the agreement checkbox
+    const toggleAgreement = (e) => {
+        const target = $(e.currentTarget);
+
+        if (target.attr('data-action') === 'agree') {
+            contractCheckbox.prop('checked', true);
+            $('.dt_modal_container .modal_body').find('.notice_message').removeClass('active');
         } else {
-            target.parents('.modal_body').find('.notice_message').addClass('active');
+            contractCheckbox.prop('checked', false);
         }
+
+        closeModal(e);
     };
 
     buyNowButton.on('click', showModal);
@@ -161,4 +188,6 @@ var $ = jQuery.noConflict();
     addToCartBtn.on('click', addToCart);
 
     contractCheckbox.on('change', toggleContractCondition);
+
+    agreementsBtn.on('click', toggleAgreement);
 })();

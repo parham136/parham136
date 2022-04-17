@@ -16,11 +16,11 @@ define('CHILD_THEME_CHILD_THEME_VERSION', '1.0.0');
 function child_enqueue_styles() {
 
     wp_enqueue_style('child-theme-theme-css', get_stylesheet_directory_uri().'/style.css', array('astra-theme-css'), CHILD_THEME_CHILD_THEME_VERSION, 'all');
-    wp_enqueue_style('featureCss', get_stylesheet_directory_uri().'/assets/feature.css', CHILD_THEME_CHILD_THEME_VERSION, 'all');
+    wp_enqueue_style('featureCss', get_stylesheet_directory_uri().'/assets/feature.css', time(), 'all');
 
     // Enqueue script files
     wp_enqueue_script('jquery');
-    wp_enqueue_script('childFeature', get_stylesheet_directory_uri().'/assets/feature.js', ['jquery'], CHILD_THEME_CHILD_THEME_VERSION, true);
+    wp_enqueue_script('childFeature', get_stylesheet_directory_uri().'/assets/feature.js', ['jquery'], time(), true);
     wp_localize_script('childFeature', 'dtLocal', [
         'ajaxUrl'        => admin_url('admin-ajax.php'),
         'siteUrl'        => site_url('/'),
@@ -74,7 +74,7 @@ function customCartButton($atts) {
         return;
     }
 
-    $cartButton = '<button class="dt_buy_now_button">Buy now</button>';
+    $cartButton = '<button class="dt_buy_now_button" data-modal="dt_modal_container">Buy now</button>';
 
     $cartButton .= '
     <div class="dt_modal_container dt_common_container">
@@ -108,8 +108,13 @@ function customCartButton($atts) {
                         </label>
                     </div>
 
+                    <label class="service terms_condition" for="terms_condition">
+                        <input type="checkbox" name="terms_condition" id="terms_condition" data-modal="dt_modal_container2"/>
+                        <strong class="contract_text">Terms & Conditions</strong>
+                    </label>
+
                     <label class="service contract_terms" for="contract_terms">
-                        <input type="checkbox" name="contract_terms" id="contract_terms"/>
+                        <input type="checkbox" name="contract_terms" id="contract_terms" data-modal="dt_modal_container3"/>
                         <strong class="contract_text">Contract terms & conditions</strong>
                     </label>
 
@@ -141,14 +146,45 @@ function customCartButton($atts) {
                 <div class="modal_content">
 
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente alias minus,
-                        officia animi ipsam accusamus consectetur sed voluptatum provident nemo labore
-                        dicta excepturi placeat atque veniam. Earum eaque incidunt obcaecati?
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint adipisci doloribus nobis nesciunt
+                        reprehenderit quos quisquam? Unde numquam quisquam voluptatum quaerat nam praesentium, sit
+                        architecto ratione aliquid. Quos, quibusdam nobis.
                     </p>
 
                     <div class="agreements_btn">
-                        <button class="i_disgree" data-action="disagree">disagree</button>
-                        <button class="i_aggree" data-action="agree">I agree</button>
+                        <button class="i_disgree" data-action="disagree" data-target="terms_condition">disagree</button>
+                        <button class="i_aggree" data-action="agree" data-target="terms_condition">I agree</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>';
+
+    $cartButton .= '
+    <div class="dt_modal_container3 dt_common_container">
+        <div class="modal_overlay"></div>
+
+        <div class="modal_wrapper">
+
+            <div class="modal_header">
+                <div>
+                    <h2>Contract terms & conditions</h2>
+                    <p>Please go through our contract terms & conditions carefully</p>
+                </div>
+                <div class="modal_close">
+                    <img src="'.get_stylesheet_directory_uri().'/assets/close.svg'.'" alt="close" width="22" height="22" />
+                </div>
+            </div>
+
+            <div class="modal_body">
+                <div class="modal_content">
+
+                    '.get_post_meta($productID, 'contract_condition', true).'
+
+                    <div class="agreements_btn">
+                        <button class="i_disgree" data-action="disagree" data-target="contract_terms">disagree</button>
+                        <button class="i_aggree" data-action="agree" data-target="contract_terms">I agree</button>
                     </div>
                 </div>
             </div>
@@ -553,4 +589,62 @@ function displayServicePriceInOrder($itemID, $values) {
             wc_add_order_item_meta($itemID, 'Service price', ''.get_woocommerce_currency_symbol().$service["servicePrice"].'');
         }
     }
+}
+
+// Add meta box to control for contract conditons
+add_action('add_meta_boxes_product', 'contractMetaBox');
+// Save the post meta on saving the post
+add_action('save_post_product', 'saveContractMetaValue', 10, 2);
+
+function contractMetaBox() {
+    add_meta_box(
+        'contract_condition',
+        'Contract conditions',
+        'contractMetaBoxHTML',
+        ['product'],
+        'normal',
+        'high'
+    );
+}
+
+/**
+ * @param $post
+ */
+function contractMetaBoxHTML($post) {
+    wp_nonce_field('contract_meta_action', 'contract_meata_nonce');
+    $metaValue = get_post_meta($post->ID, 'contract_condition', true);
+
+    echo '
+        <div>
+            <h3>Contract text:</h3>
+            <textarea style="width: 100%;" name="contract_condition" id="contract_condition" cols="30" rows="20">'.$metaValue.'</textarea>
+        </div>
+    ';
+}
+
+/**
+ * @param  int     $postID
+ * @param  object  $postObject
+ * @return mixed
+ */
+function saveContractMetaValue(int $postID, object $postObject) {
+    if (!isset($_POST['contract_meata_nonce']) || !wp_verify_nonce($_POST['contract_meata_nonce'], 'contract_meta_action')) {
+        return $postID;
+    }
+
+    /* Does current user have capabitlity to edit post */
+    $postType = get_post_type_object($postObject->post_type);
+
+    if (!current_user_can($postType->cap->edit_post, $postID)) {
+        return $postID;
+    }
+
+    /* Get the posted data and check it for uses. */
+    $newMetaValue = (isset($_POST['contract_condition']) ? $_POST['contract_condition'] : "");
+
+    /* Get the meta key. */
+    $metaKey = 'contract_condition';
+
+    update_post_meta($postID, $metaKey, $newMetaValue);
+
 }

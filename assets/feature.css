@@ -29,6 +29,12 @@
     text-transform: uppercase;
 }
 
+.dt_common_container .i_disgree {
+    background-color: #02010100;
+    border: 1px solid #c50404;
+    color: #c50404;
+}
+
 .dt_buy_now_button:hover,
 .dt_buy_now_button:focus,
 .dt_add_to_cart_button:hover,
@@ -42,13 +48,12 @@
 
 .dt_common_container .i_disgree:hover,
 .dt_common_container .i_disgree:focus {
-    color: red;
+    color: #c50404;
     background-color: #02010100;
-    border-color: red;
+    border-color: #c50404;
 }
 
-.dt_modal_container,
-.dt_modal_container2 {
+.dt_common_container {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -58,13 +63,11 @@
     display: none;
 }
 
-.dt_modal_container.active,
-.dt_modal_container2.active {
+.dt_common_container.active {
     display: block;
 }
 
-.dt_modal_container .modal_overlay,
-.dt_modal_container2 .modal_overlay {
+.dt_common_container .modal_overlay {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -72,19 +75,18 @@
     background: rgba(255, 255, 255, 0.7);
 }
 
-.dt_modal_container .modal_wrapper,
-.dt_modal_container2 .modal_wrapper {
+.dt_common_container .modal_wrapper {
     background: #ffffff;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     max-width: 490px;
+    max-height: 600px;
     width: 95%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: left;
-    max-height: 90vh;
     display: flex;
     flex-direction: column;
     padding: 1.5rem 0;
@@ -93,18 +95,17 @@
     opacity: 0;
 }
 
-.dt_modal_container2 .modal_wrapper {
+.dt_modal_container2 .modal_wrapper,
+.dt_modal_container3 .modal_wrapper {
     max-width: 800px;
 }
 
-.dt_modal_container .modal_wrapper.active,
-.dt_modal_container2 .modal_wrapper.active {
+.dt_common_container .modal_wrapper.active {
     pointer-events: all;
     opacity: 1;
 }
 
-.dt_modal_container .modal_header,
-.dt_modal_container2 .modal_header {
+.dt_common_container .modal_header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -114,23 +115,19 @@
     padding-bottom: 1rem;
 }
 
-.dt_modal_container .modal_header h2,
-.dt_modal_container2 .modal_header h2 {
+.dt_common_container .modal_header h2 {
     margin-bottom: 0.5rem;
     font-weight: bold;
     color: #0000007a;
 }
-.dt_modal_container .modal_header p,
-.dt_modal_container2 .modal_header p {
+.dt_common_container .modal_header p {
     margin: 0;
 }
-.dt_modal_container .modal_close,
-.dt_modal_container2 .modal_close {
+.dt_common_container .modal_close {
     cursor: pointer;
 }
 
-.dt_modal_container .modal_body,
-.dt_modal_container2 .modal_body {
+.dt_common_container .modal_body {
     padding: 0 1.7rem;
     overflow-y: auto;
 }
@@ -153,10 +150,11 @@
 }
 
 .dt_modal_container .contract_terms {
-    margin-top: 2rem;
+    margin-top: 0.6rem;
 }
-.dt_modal_container .contract_text {
-    color: #2d7cff;
+
+.dt_modal_container .terms_condition {
+    margin-top: 2rem;
 }
 
 .dt_modal_container .service input[type='checkbox'] {
@@ -178,7 +176,7 @@
     content: '';
     display: block;
     top: 40%;
-    left: 55%;
+    left: 51%;
     width: 7px;
     height: 14px;
     border-style: solid;
@@ -238,11 +236,12 @@
     display: block;
 }
 
-.dt_modal_container2 .modal_body p {
+.dt_modal_container2 .modal_body p,
+.dt_modal_container3 .modal_body p {
     margin-bottom: 1.5rem;
 }
 
-.dt_modal_container2 .agreements_btn {
+.dt_common_container .agreements_btn {
     display: flex;
     justify-content: flex-end;
     align-items: center;

@@ -6,26 +6,19 @@ var $ = jQuery.noConflict();
     const modalOverlay = $('.modal_overlay');
     const addToCartBtn = $('.dt_add_to_cart_button');
     const serviceCheckbox = $('.dt_modal_container .service_checkbox');
-    const contractCheckbox = $('.dt_modal_container .contract_terms input');
+    const conditionCheckboxes = $(
+        '.dt_modal_container .terms_condition input, .dt_modal_container .contract_terms input'
+    );
     const agreementsBtn = $('.dt_modal_container2, .agreements_btn button');
 
     const showModal = (e) => {
         e.stopPropagation();
 
-        $('.dt_modal_container').addClass('active');
+        const target = $(e.currentTarget);
+
+        $(`.${target.attr('data-modal')}`).addClass('active');
         setTimeout(() => {
-            $('.dt_modal_container .modal_wrapper').addClass('active');
-        }, 50);
-    };
-
-    // Show the contract modal on top of buy now feature modal
-    const showContractModal = (e) => {
-        e.stopPropagation();
-
-        $('.dt_modal_container2').addClass('active');
-
-        setTimeout(() => {
-            $('.dt_modal_container2 .modal_wrapper').addClass('active');
+            $(`.${target.attr('data-modal')} .modal_wrapper`).addClass('active');
         }, 50);
     };
 
@@ -100,9 +93,21 @@ var $ = jQuery.noConflict();
 
         const target = $(e.currentTarget);
 
-        const termsCheckbox = target.parents('.modal_body').find('.contract_terms input');
+        const contractCheckbox = target.parents('.modal_body').find('.contract_terms input');
+
+        const termsCheckbox = target.parents('.modal_body').find('.terms_condition input');
 
         if (!termsCheckbox.prop('checked')) {
+            target.parents('.modal_body').find('.notice_message').html('Please agree to terms & conditions');
+            target.parents('.modal_body').find('.notice_message').addClass('active');
+            return;
+        }
+
+        if (!contractCheckbox.prop('checked')) {
+            target
+                .parents('.modal_body')
+                .find('.notice_message')
+                .html('Please agree to contract terms & conditions');
             target.parents('.modal_body').find('.notice_message').addClass('active');
             return;
         }
@@ -160,7 +165,7 @@ var $ = jQuery.noConflict();
 
         target.prop('checked', false);
 
-        showContractModal(e);
+        showModal(e);
     };
 
     // Toggle the agreement checkbox
@@ -168,10 +173,10 @@ var $ = jQuery.noConflict();
         const target = $(e.currentTarget);
 
         if (target.attr('data-action') === 'agree') {
-            contractCheckbox.prop('checked', true);
+            $(`.dt_modal_container .${target.attr('data-target')} input`).prop('checked', true);
             $('.dt_modal_container .modal_body').find('.notice_message').removeClass('active');
         } else {
-            contractCheckbox.prop('checked', false);
+            $(`.dt_modal_container .${target.attr('data-target')} input`).prop('checked', false);
         }
 
         closeModal(e);
@@ -187,7 +192,7 @@ var $ = jQuery.noConflict();
 
     addToCartBtn.on('click', addToCart);
 
-    contractCheckbox.on('change', toggleContractCondition);
+    conditionCheckboxes.on('change', toggleContractCondition);
 
     agreementsBtn.on('click', toggleAgreement);
 })();

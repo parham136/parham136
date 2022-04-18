@@ -27,6 +27,10 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php bloginfo('charset');?>" />
 	<title><?php echo get_bloginfo('name', 'display'); ?></title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto:wght@500&display=swap"
+		rel="stylesheet">
 </head>
 
 <body <?php echo is_rtl() ? 'rightmargin' : 'leftmargin'; ?>="0" marginwidth="0" topmargin="0" marginheight="0"
@@ -52,13 +56,12 @@
 						<div class="header_text">
 							<h1 style="
                                     text-align: center;
-									color: #2d7cff;
                                     font-weight: bold;
                                     font-size: 1.8rem;
-                                    font-family: 'Poppins', sans-serif;
+                                    font-family: 'Roboto', sans-serif;
                                     margin-bottom: 0;
                                 ">Order Confirmation</h1>
-							<p style="font-family: 'Poppins', sans-serif;"><?php echo $email_heading; ?></p>
+							<p style="font-family: 'Roboto', sans-serif;"><?php echo $email_heading; ?></p>
 						</div>
 					</td>
 				</tr>

@@ -25,6 +25,19 @@
      */
 do_action('woocommerce_email_header', $email_heading, $email);?>
 
+<table width="100%" style="margin-top: 2rem;">
+	<tbody>
+		<tr>
+			<td style="text-align: center">
+				<div align="center" style="margin-top: 1.5rem">
+					<img src="<?php echo get_stylesheet_directory_uri().'/woocommerce/emails/assets/hand-shake.png' ?>"
+						style="display: block; height: auto; border: 0; width: 325px; max-width: 100%" width="325" />
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
 <?php /* translators: %s: Customer first name */?>
 <p><?php printf(esc_html__('Hi %s,', 'woocommerce'), esc_html($order->get_billing_first_name()));?></p>
 <?php /* translators: %s: Order number */?>
@@ -60,19 +73,6 @@ do_action('woocommerce_email_header', $email_heading, $email);?>
     }
 
 ?>
-
-<table width="100%">
-	<tbody>
-		<tr>
-			<td style="text-align: center">
-				<div align="center" style="margin-top: 1.5rem">
-					<img src="<?php echo get_stylesheet_directory_uri().'/woocommerce/emails/assets/hand-shake.svg' ?>"
-						style="display: block; height: auto; border: 0; width: 325px; max-width: 100%" width="325" />
-				</div>
-			</td>
-		</tr>
-	</tbody>
-</table>
 
 <?php
     /*

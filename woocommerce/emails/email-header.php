@@ -27,43 +27,43 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php bloginfo('charset');?>" />
 	<title><?php echo get_bloginfo('name', 'display'); ?></title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto:wght@500&display=swap"
-		rel="stylesheet">
 </head>
 
 <body <?php echo is_rtl() ? 'rightmargin' : 'leftmargin'; ?>="0" marginwidth="0" topmargin="0" marginheight="0"
 	offset="0">
-	<div id="wrapper" dir="<?php echo is_rtl() ? 'rtl' : 'ltr'; ?>" style="padding: 1rem; background-color: #EAF2FF">
-		<table width="100%" style="margin-bottom: 1rem;">
-			<tbody>
-				<tr>
-					<td style="text-align: center">
-						<div class="logo">
-							<img src="<?php echo get_stylesheet_directory_uri().'/woocommerce/emails/assets/logo.png' ?>"
-								alt="" />
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-
-		<table width="100%">
-			<tbody>
-				<tr>
-					<td style="text-align: center">
-						<div class="header_text">
-							<h1 style="
-                                    text-align: center;
-                                    font-weight: bold;
-                                    font-size: 1.8rem;
-                                    font-family: 'Roboto', sans-serif;
-                                    margin-bottom: 0;
-                                ">Order Confirmation</h1>
-							<p style="font-family: 'Roboto', sans-serif;"><?php echo $email_heading; ?></p>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<div id="wrapper" dir="<?php echo is_rtl() ? 'rtl' : 'ltr'; ?>">
+		<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+			<tr>
+				<td align="center" valign="top">
+					<div id="template_header_image">
+						<?php
+                                if ($img = get_option('woocommerce_email_header_image')) {
+                                    echo '<p style="margin-top:0;"><img src="'.esc_url($img).'" alt="'.get_bloginfo('name', 'display').'" /></p>';
+                                }
+                            ?>
+					</div>
+					<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container">
+						<tr>
+							<td align="center" valign="top">
+								<!-- Header -->
+								<table border="0" cellpadding="0" cellspacing="0" width="100%" id="template_header">
+									<tr>
+										<td id="header_wrapper">
+											<h1><?php echo $email_heading; ?></h1>
+										</td>
+									</tr>
+								</table>
+								<!-- End Header -->
+							</td>
+						</tr>
+						<tr>
+							<td align="center" valign="top">
+								<!-- Body -->
+								<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_body">
+									<tr>
+										<td valign="top" id="body_content">
+											<!-- Content -->
+											<table border="0" cellpadding="20" cellspacing="0" width="100%">
+												<tr>
+													<td valign="top">
+														<div id="body_content_inner">

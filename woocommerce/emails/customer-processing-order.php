@@ -14,6 +14,7 @@
 	<!--[if !mso]><!-->
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" type="text/css" />
+
 	<!--<![endif]-->
 	<style>
 	* {
@@ -50,6 +51,11 @@
 
 		table {
 			table-layout: fixed !important;
+		}
+
+		table th,
+		td {
+			font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif !important;
 		}
 
 		.stack .column {
@@ -175,7 +181,7 @@
                                                                             margin: 0;
                                                                             color: #393d47 !important;
                                                                             direction: ltr;
-                                                                            font-family: 'Roboto', Tahoma,
+																			font-family: 'Roboto', Tahoma,
                                                                                 Verdana, Segoe, sans-serif;
                                                                             font-size: 45px;
                                                                             font-weight: 700;
@@ -186,7 +192,7 @@
                                                                             margin-bottom: 0;
                                                                         ">
 																	<span class="tinyMce-placeholder"
-																		style="color: #393d47 !important;">Order
+																		style="color: #393d47;">Order
 																		Confirmation</span>
 																</h1>
 															</td>
@@ -294,6 +300,9 @@
                                                                 background: #EAF2FF;
                                                                 padding: 2rem;
                                                                 border-radius: 2rem;
+																max-width: 930px;
+																margin-left: auto;
+    															margin-right: auto;
                                                             " width="100%">
 														<tbody>
 															<tr>
@@ -340,7 +349,7 @@
                                                                         padding-top: 30px;
                                                                     ">
 																<div style="
-                                                                            color: #aeb1b4;
+                                                                            color: #636A70;
                                                                             direction: ltr;
                                                                             font-family: 'Roboto', Tahoma,
                                                                                 Verdana, Segoe, sans-serif;
@@ -391,7 +400,7 @@
                                                                             line-height: 120%;
                                                                             text-align: center;
                                                                         ">
-																	<p style="margin: 0; color: #636a70 !important;">
+																	<p style="margin: 0; color: #636a70;">
 																		project@digitaltechnologia.com
 																	</p>
 																</div>
@@ -440,7 +449,7 @@
 														<tr>
 															<td>
 																<div style="
-                                                                            color: #393d47;
+                                                                            color: #636A70;
                                                                             direction: ltr;
                                                                             font-family: Roboto, Tahoma,
                                                                                 Verdana, Segoe, sans-serif;

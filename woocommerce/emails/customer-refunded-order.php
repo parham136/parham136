@@ -142,9 +142,11 @@
 														</tr>
 													</table>
 													<table border="0" cellpadding="0" cellspacing="0"
-														class="paragraph_block" role="presentation"
-														style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;"
-														width="100%">
+														class="paragraph_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;
+														max-width: 930px;
+														margin-left: auto;
+														margin-right: auto;
+														" width="100%">
 														<tr>
 															<td
 																style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:25px;">
@@ -168,7 +170,7 @@
 															<td
 																style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:25px;">
 																<div
-																	style="color:#aeb1b4;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:15px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;">
+																	style="color:#636A70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:15px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;">
 																	<p style="margin: 0;">Please allow 3-5 business days
 																		for your transaction to process.</p>
 																</div>
@@ -183,7 +185,7 @@
 															<td
 																style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:30px;">
 																<div
-																	style="color:#aeb1b4;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:15px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;">
+																	style="color:#636A70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:15px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;">
 																	<p style="margin: 0;">After 5 days if you
 																		still
 																		haven`t received your payment let us know we
@@ -203,6 +205,9 @@
                                                                 padding: 2rem;
                                                                 border-radius: 2rem;
                                                                 margin-top: 3rem;
+																max-width: 930px;
+																margin-left: auto;
+    															margin-right: auto;
                                                             " width="100%">
 														<tbody>
 															<tr>
@@ -241,7 +246,7 @@
 															<td
 																style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:30px;">
 																<div
-																	style="color:#636a70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:14px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:center;">
+																	style="color:#636A70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:14px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:center;">
 																	<p style="margin: 0;">project@digitaltechnologia.com
 																	</p>
 																</div>
@@ -278,7 +283,7 @@
 														<tr>
 															<td>
 																<div
-																	style="color:#636a70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;">
+																	style="color:#636A70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;">
 																	<p style="margin: 0;">“IMPORTANT: The contents of
 																		this email and any attachments are confidential.
 																		They are intended for the named recipient(s)

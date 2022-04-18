@@ -35,6 +35,7 @@
 	<!--[if !mso]><!-->
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" type="text/css" />
+
 	<!--<![endif]-->
 	<style>
 	* {
@@ -212,8 +213,8 @@
 															<td
 																style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:30px;">
 																<div
-																	style="color:#aeb1b4;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:15px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;">
-																	<p style="margin: 0;" style="color:#aeb1b4;">If we
+																	style="color:#636A70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:15px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;">
+																	<p style="margin: 0;" style="color:#636A70;">If we
 																		haven`t previously
 																		informed you about this action and you don`t
 																		know the reason please get in touch using the
@@ -230,7 +231,7 @@
 															<td
 																style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:30px;">
 																<div
-																	style="color:#636a70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:15px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:center;">
+																	style="color:#636A70;direction:ltr;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;font-size:15px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:center;">
 																	<p style="margin: 0;">
 																		project@digitaltechnologia.com </p>
 																</div>
@@ -267,7 +268,7 @@
 														<tr>
 															<td>
 																<div
-																	style="color:#393d47;direction:ltr;font-family:Roboto, Tahoma, Verdana, Segoe, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;">
+																	style="color:#636A70;direction:ltr;font-family:Roboto, Tahoma, Verdana, Segoe, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;">
 																	<p style="margin: 0;">“IMPORTANT: The contents of
 																		this email and any attachments are confidential.
 																		They are intended for the named recipient(s)

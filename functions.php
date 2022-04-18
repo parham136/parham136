@@ -648,3 +648,29 @@ function saveContractMetaValue(int $postID, object $postObject) {
     update_post_meta($postID, $metaKey, $newMetaValue);
 
 }
+
+// Add a new trigger for woocommerce to send email
+// This trigger will happen if status is changed from on processing to on hold in woocommerce order
+add_filter('woocommerce_email_actions', 'addOnProcessingToOnHoldEmailAction');
+
+/**
+ * @param  $array
+ * @return mixed
+ */
+function addOnProcessingToOnHoldEmailAction($array) {
+
+    $array[] = 'woocommerce_order_status_processing_to_on-hold';
+
+    return $array;
+
+}
+
+// Send an email when an order status is changed from on processing to on hold
+add_action('woocommerce_email', 'sendEmailOnHoldStatus');
+
+/**
+ * @param $email_class
+ */
+function sendEmailOnHoldStatus($email_class) {
+    add_action('woocommerce_order_status_processing_to_on-hold_notification', [$email_class->emails['WC_Email_Customer_On_Hold_Order'], 'trigger']);
+}
